@@ -1,4 +1,5 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "hu-core",
   "description": "Core HU Agent Framework skills and project guardrails.",
   "version": "0.1.0",
