@@ -1,0 +1,13 @@
+name: Validate framework
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skill frontmatter and hidden Unicode
+        run: python3 .github/validate_skills.py

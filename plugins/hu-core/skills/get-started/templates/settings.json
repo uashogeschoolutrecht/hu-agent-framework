@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "hu-agent-framework": {
+      "source": {
+        "source": "github",
+        "repo": "uashogeschoolutrecht/hu-agent-framework"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "hu-core@hu-agent-framework": true
+  }
+}

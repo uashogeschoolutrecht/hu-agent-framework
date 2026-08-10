@@ -1,0 +1,23 @@
+{
+  "name": "hu-agent-framework",
+  "owner": {
+    "name": "Data Science Pool",
+    "url": "https://www.hu.nl/onderzoek/data-science-pool"
+  },
+  "plugins": [
+    {
+      "name": "hu-core",
+      "source": "./plugins/hu-core",
+      "description": "University-wide HU agent skills and guardrails."
+    },
+    {
+      "name": "hu-dsp",
+      "source": {
+        "source": "github",
+        "repo": "uashogeschoolutrecht/hu-agent-framework-dsp",
+        "ref": "main"
+      },
+      "description": "Data Science Pool agent skills."
+    }
+  ]
+}

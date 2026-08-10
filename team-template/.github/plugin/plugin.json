@@ -1,0 +1,10 @@
+{
+  "name": "hu-<team>",
+  "description": "Team-specific HU agent skills.",
+  "version": "0.1.0",
+  "author": {
+    "name": "<team>"
+  },
+  "repository": "https://github.com/uashogeschoolutrecht/hu-agent-framework-<team>",
+  "license": "MIT"
+}

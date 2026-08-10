@@ -1,0 +1,11 @@
+{
+  "name": "hu-core",
+  "description": "Core HU Agent Framework skills and project guardrails.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Data Science Pool"
+  },
+  "repository": "https://github.com/uashogeschoolutrecht/hu-agent-framework",
+  "license": "MIT",
+  "keywords": ["HU", "agents", "SDD", "Copilot"]
+}
