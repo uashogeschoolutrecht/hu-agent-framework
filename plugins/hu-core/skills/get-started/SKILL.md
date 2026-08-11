@@ -9,21 +9,36 @@ last_reviewed: 2026-08-11
 
 Start this workflow only after the user has opened the folder they want to work in. VS Code resets the Copilot Chat conversation when the user switches folders. If no workspace is open, or the current workspace is clearly not the intended project, tell the user to open the correct folder and run this skill again; do not attempt to carry the workflow across that switch. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, and decision records. Do not narrate file operations.
 
-## 1. Understand intent
+## 1. Understand intent before inspecting
 
-Begin with one short question:
+Do not inspect files, run commands, or explore the workspace before this first exchange unless the user has already supplied the answers. Start with a short, focused set of questions:
 
 > Briefly, what do you want to make or change? We will work out the specifics next.
 
-Make clear that the answer should be brief. Do not ask the user to provide a full specification at this point.
+Then ask only what is still unclear:
+
+- What outcome would make this useful?
+- Who will use it or be affected by it?
+- Will it handle personal, research, or other sensitive data?
+- Will it serve students, minors, patients, identifiable research subjects, or the general public?
+
+Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label. If the initial request already answers a question, do not ask it again.
 
 Announce:
 
-> SDD 1/7: Understanding the goal before examining the project context.
+> SDD 1/8: Understanding the goal before examining the project context.
 
-## 2. Locate and inspect context
+## 2. Form an initial scope hypothesis
 
-Use the brief intent to interpret the current workspace:
+From the user's brief description and answers, form a provisional view of the goal, affected parts, uncertainty, and likely session scope. Do not present this as a final classification yet. State it briefly and invite correction:
+
+> SDD 2/8: I understand the goal as <brief summary>; initially this looks like a <focused/broad> session because <brief reason>. I’ll check the project context next and adjust that assessment if needed.
+
+This gives the user an immediate orientation without making them wait for workspace exploration.
+
+## 3. Locate and inspect context
+
+Only after the initial exchange and scope hypothesis, inspect the current workspace to confirm the situation:
 
 - For a new project, treat the open folder as the project location and inspect what is already there.
 - For a change to an existing project, inspect the open folder's files, structure, configuration, tests, and version-control state.
@@ -32,7 +47,7 @@ Use the brief intent to interpret the current workspace:
 
 Announce:
 
-> SDD 2/7: Locating the relevant project context and checking what already exists.
+> SDD 3/8: Locating the relevant project context and checking what already exists.
 
 Do not switch folders during this workflow. Do not overwrite existing files.
 
@@ -42,7 +57,7 @@ Classify environment from the user's intent and the inspected context: greenfiel
 
 Announce the classification with its reasons and invite correction:
 
-> SDD 3/7: This is a <greenfield/brownfield> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
+> SDD 4/8: This is a <greenfield/brownfield> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
 
 Treat the scope as session-specific, not a permanent project label.
 
@@ -70,7 +85,7 @@ The generated `AGENTS.md` is instruction-layer guidance, not a substitute for re
 
 Announce:
 
-> SDD 4/7: Turning the goal and project context into an agreed specification.
+> SDD 5/8: Turning the goal and project context into an agreed specification.
 
 For greenfield work, create a new `specs/<short-name>.md`. For brownfield work, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
 
@@ -101,7 +116,7 @@ Then implement one thin vertical slice through the relevant layers, such as inte
 
 Announce:
 
-> SDD 5/7: Prototyping the riskiest assumption, then validating one thin path through the system.
+> SDD 6/8: Prototyping the riskiest assumption, then validating one thin path through the system.
 
 Record important changes to the intended behaviour or architecture in the spec or a decision record. Do not treat a prototype as production-ready unless that is explicitly the goal.
 
@@ -109,7 +124,7 @@ Record important changes to the intended behaviour or architecture in the spec o
 
 Announce before the remaining implementation:
 
-> SDD 6/7: Building the remaining scope against the validated specification and vertical slice.
+> SDD 7/8: Building the remaining scope against the validated specification and vertical slice.
 
 Implement the accepted spec in small, reviewable increments. Prefer existing project conventions. Run the relevant tests after each meaningful increment and report failures plainly.
 
@@ -132,7 +147,7 @@ Before declaring completion, run the acceptance checks from the spec and repeat 
 
 Announce:
 
-> SDD 7/7: Verifying acceptance criteria, the integrated slice, and recorded decisions.
+> SDD 8/8: Verifying acceptance criteria, the integrated slice, and recorded decisions.
 
 Summarise what changed and what remains open, and point to the spec and decision records. For high-risk work, state whether the review gate passed, is pending, or was not applicable. Do not claim completion when verification was skipped.
 
