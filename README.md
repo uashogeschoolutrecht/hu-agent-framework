@@ -25,3 +25,5 @@ Lower tiers take precedence when their instructions overlap. Plugins compose in 
 ## Repository status
 
 This is v1. The framework focuses on the get-started SDD workflow, project guardrails, skill sharing, and the plugin distribution pipe. Visualisation, analytics, richer decision records, and MCP servers are deferred.
+
+The get-started workflow is iterative: it aligns assumptions up front, then uses small prototypes, functioning vertical slices, and user feedback to improve the direction before expanding the build.

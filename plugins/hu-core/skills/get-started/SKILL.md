@@ -7,7 +7,7 @@ last_reviewed: 2026-08-11
 
 # Get Started
 
-Start this workflow only after the user has opened the folder they want to work in. VS Code resets the Copilot Chat conversation when the user switches folders. If no workspace is open, or the current workspace is clearly not the intended project, tell the user to open the correct folder and run this skill again; do not attempt to carry the workflow across that switch. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, and decision records. Do not narrate file operations.
+Start this workflow only after the user has opened the folder they want to work in. VS Code resets the Copilot Chat conversation when the user switches folders. If no workspace is open, or the current workspace is clearly not the intended project, tell the user to open the correct folder and run this skill again; do not attempt to carry the workflow across that switch. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, decision records, and feedback loops. Do not narrate file operations.
 
 ## 1. Understand intent before inspecting
 
@@ -26,15 +26,19 @@ Keep this exchange lightweight. Do not ask the user for a full specification, te
 
 Announce:
 
-> SDD 1/8: Understanding the goal before examining the project context.
+> SDD 1/9: Understanding the goal before examining the project context.
 
-## 2. Form an initial scope hypothesis
+## 2. Align on assumptions
 
-From the user's brief description and answers, form a provisional view of the goal, affected parts, uncertainty, and likely session scope. Do not present this as a final classification yet. State it briefly and invite correction:
+Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, in one short numbered round, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch.
 
-> SDD 2/8: I understand the goal as <brief summary>; initially this looks like a <focused/broad> session because <brief reason>. I’ll check the project context next and adjust that assessment if needed.
+> SDD 2/9: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
 
-This gives the user an immediate orientation without making them wait for workspace exploration.
+Ask one final lightweight alignment question:
+
+> What would make this unusable or a clear failure for you?
+
+If the intent is vague, the assumptions conflict, or the work appears broad or high risk, continue with another short round of targeted questions. Announce why the deeper round is needed. Do not turn this into a fixed questionnaire. The alignment stage is complete when the goal, intended outcome, boundaries, and material assumptions are shared enough to inspect and specify.
 
 ## 3. Locate and inspect context
 
@@ -47,17 +51,17 @@ Only after the initial exchange and scope hypothesis, inspect the current worksp
 
 Announce:
 
-> SDD 3/8: Locating the relevant project context and checking what already exists.
+> SDD 3/9: Locating the relevant project context and checking what already exists.
 
 Do not switch folders during this workflow. Do not overwrite existing files.
 
-## 3. Classify the work
+## 4. Classify the work
 
 Classify environment from the user's intent and the inspected context: greenfield or brownfield. Infer session scope rather than asking the user to label it small or big. Use the goal, number of affected parts, existing complexity, integrations, uncertainty, and expected validation effort.
 
 Announce the classification with its reasons and invite correction:
 
-> SDD 4/8: This is a <greenfield/brownfield> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
+> SDD 4/9: This is a <greenfield/brownfield> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
 
 Treat the scope as session-specific, not a permanent project label.
 
@@ -85,7 +89,7 @@ The generated `AGENTS.md` is instruction-layer guidance, not a substitute for re
 
 Announce:
 
-> SDD 5/8: Turning the goal and project context into an agreed specification.
+> SDD 5/9: Turning the goal and project context into an agreed specification.
 
 For greenfield work, create a new `specs/<short-name>.md`. For brownfield work, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
 
@@ -100,37 +104,50 @@ The spec must contain:
 - test strategy
 - prototype goal and what it should validate
 - first vertical slice and the path it should trace through the system
+- confirmed assumptions and boundaries
+- iteration and feedback approach
 - implementation notes, if they are already known
 
 Do not start implementation while requirements or acceptance criteria are materially unclear. Ask focused questions instead.
 
-## 6. Prototype and validate a vertical slice
+## 6. Prototype
 
 This stage is active for every project. Keep it proportional to the inferred scope:
 
 - For a focused project, use the smallest useful prototype: a sketch, stub, spike, example interaction, or thin proof of the riskiest assumption.
 - For a broad project, prototype the uncertain or user-visible parts before committing to full implementation.
 - Use the prototype to test understanding with the user and refine the spec, not merely to demonstrate generated code.
-
-Then implement one thin vertical slice through the relevant layers, such as interface, application logic, domain/model logic, persistence, and external integration. Prefer a small traceable path over a complete horizontal module. Test the slice end to end where the architecture permits, and use the result to correct the spec or design before expanding the build.
+- Skip a separate prototype only when building the prototype is practically the same as building the whole small project. State that decision and why.
 
 Announce:
 
-> SDD 6/8: Prototyping the riskiest assumption, then validating one thin path through the system.
+> SDD 6/9: Prototyping the riskiest assumption so we can improve the direction before building further.
 
-Record important changes to the intended behaviour or architecture in the spec or a decision record. Do not treat a prototype as production-ready unless that is explicitly the goal.
+Show the prototype or a functioning thin example and proactively ask what the user would change, remove, or do differently. If feedback materially changes the goal, users, boundaries, or assumptions, return to the alignment stage, restate the revised understanding, and update the spec's `Iterations / Feedback` section before continuing. Do not treat a prototype as production-ready unless that is explicitly the goal.
 
-## 7. Build and finish
+## 7. Build and gather feedback
 
-Announce before the remaining implementation:
+> SDD 7/9: Building the next small improvement and gathering feedback before expanding the scope.
 
-> SDD 7/8: Building the remaining scope against the validated specification and vertical slice.
+Implement the smallest useful next increment. After each functioning increment, proactively ask for feedback and compare it with the agreed assumptions and acceptance criteria. Repeat the prototype, feedback, and improvement loop as needed; the workflow is iterative, not a one-way march from spec to completion.
+
+When a user proposes a decision that appears risky or likely to undermine the goal, give a brief nudge rather than silently complying or blocking:
+
+> One concern: <specific risk>. An alternative is <alternative>. I recommend <recommendation> unless you have a reason to prefer the original.
+
+Ask whether the user wants to keep the original decision. Record a consequential choice in `decisions/`.
 
 Implement the accepted spec in small, reviewable increments. Prefer existing project conventions. Run the relevant tests after each meaningful increment and report failures plainly.
 
 For high-risk work, pause before release for the review gate named in the spec. Check personal-data handling explicitly. Never commit secrets or data files. Before every push, inspect notebooks and clear output cells and tables derived from real records.
 
 Ask before irreversible or destructive actions. Never delete a remote repository, branch, or release.
+
+## 8. Validate a vertical slice
+
+> SDD 8/9: Validating one thin, functioning path through the relevant system layers.
+
+Implement or test a small traceable path through the relevant layers, such as interface, application logic, domain/model logic, persistence, and external integration. Prefer an end-to-end slice over a complete horizontal module. Use the result and the user's feedback to correct the spec or design before expanding the build. Repeat this stage within the iteration loop whenever a new risk or layer is introduced.
 
 ## Record decisions throughout
 
@@ -147,7 +164,7 @@ Before declaring completion, run the acceptance checks from the spec and repeat 
 
 Announce:
 
-> SDD 8/8: Verifying acceptance criteria, the integrated slice, and recorded decisions.
+> SDD 9/9: Verifying acceptance criteria, the integrated slice, feedback, and recorded decisions.
 
 Summarise what changed and what remains open, and point to the spec and decision records. For high-risk work, state whether the review gate passed, is pending, or was not applicable. Do not claim completion when verification was skipped.
 

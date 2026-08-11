@@ -15,6 +15,14 @@
 - Risk: low / high
 - Reasons:
 
+## Assumptions
+
+### Confirmed assumptions
+
+### Boundaries
+
+### Assumptions to validate
+
 ## Requirements
 
 ### Functional requirements
@@ -40,6 +48,14 @@
 ### Layers and path covered
 
 ### End-to-end checks
+
+## Iterations / Feedback
+
+### Iteration 1
+
+- Prototype or increment:
+- Feedback:
+- Changes to intent, assumptions, scope, or acceptance criteria:
 
 ## Open Questions
 
