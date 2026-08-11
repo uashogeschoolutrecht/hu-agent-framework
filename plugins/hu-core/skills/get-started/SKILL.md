@@ -7,7 +7,7 @@ last_reviewed: 2026-08-11
 
 # Get Started
 
-Run this workflow from the user's intent, not from an assumption that the current workspace is the relevant project. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, and decision records. Do not narrate file operations.
+Start this workflow only after the user has opened the folder they want to work in. VS Code resets the Copilot Chat conversation when the user switches folders. If no workspace is open, or the current workspace is clearly not the intended project, tell the user to open the correct folder and run this skill again; do not attempt to carry the workflow across that switch. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, and decision records. Do not narrate file operations.
 
 ## 1. Understand intent
 
@@ -23,18 +23,18 @@ Announce:
 
 ## 2. Locate and inspect context
 
-Use the brief intent to determine what context is relevant:
+Use the brief intent to interpret the current workspace:
 
-- For a new project, ask where the user wants it created or opened if no suitable folder is open.
-- For a change to an existing project, ask for its path or repository if it is not open; do not treat an unrelated empty workspace as that project.
-- If a relevant workspace is open, inspect its files, structure, configuration, tests, and version-control state.
-- If no relevant project exists yet, classify the work as greenfield without pretending that filesystem inspection happened.
+- For a new project, treat the open folder as the project location and inspect what is already there.
+- For a change to an existing project, inspect the open folder's files, structure, configuration, tests, and version-control state.
+- If the current workspace is empty, classify the work as greenfield after confirming that this is intentional.
+- If the current workspace is not the project described by the user, stop and ask the user to open the target folder and run the skill again.
 
 Announce:
 
 > SDD 2/7: Locating the relevant project context and checking what already exists.
 
-If the user identifies an existing project that is not open, help them open or locate it before inspecting it. If they want a new project, establish its location before creating project artifacts. Do not overwrite existing files.
+Do not switch folders during this workflow. Do not overwrite existing files.
 
 ## 3. Classify the work
 

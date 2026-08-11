@@ -7,7 +7,10 @@ The HU Agent Framework distributes reviewed Copilot skills and establishes a lig
 1. Enable `chat.plugins.enabled` in VS Code.
 2. Add `uashogeschoolutrecht/hu-agent-framework` to `chat.plugins.marketplaces`.
 3. Install the `hu-core` plugin.
-4. Open a project and run `/hu-core:get-started`.
+4. Open the project folder you want to work in.
+5. Run `/hu-core:get-started`.
+
+**Important:** start `get-started` only after opening the target project folder. VS Code resets the Copilot Chat conversation when you switch to another folder, so do not start the skill first and open the project during the same conversation. If the wrong folder is open, open the correct one and start the skill again.
 
 The plugin is in preview in VS Code. The first installation and workspace-recommendation path must be checked manually in a clean profile; see `setup/manual-verification.md`.
 
