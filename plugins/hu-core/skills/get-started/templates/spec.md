@@ -25,7 +25,21 @@
 
 ## Infrastructure Requirements
 
+## Prototype
+
+### Goal
+
+### Assumption or user need to validate
+
+### Result and changes to the spec
+
 ## Test Strategy
+
+### First vertical slice
+
+### Layers and path covered
+
+### End-to-end checks
 
 ## Open Questions
 
