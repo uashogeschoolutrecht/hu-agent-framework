@@ -11,18 +11,23 @@ Start this workflow only after the user has opened the folder they want to work 
 
 ## 1. Understand intent before inspecting
 
-Do not inspect files, run commands, or explore the workspace before this first exchange unless the user has already supplied the answers. Start with a short, focused set of questions:
+Do not inspect files, run commands, or explore the workspace before this exchange unless the user has already supplied the answers. Ask exactly one question per response. Never show the user a list of upcoming questions. Keep each question short and wait for the answer before asking the next one.
+
+The first response must contain only the stage announcement and this question:
 
 > Briefly, what do you want to make or change? We will work out the specifics next.
 
-Then ask only what is still unclear:
+After the user answers, ask only the next unanswered question, in this order:
 
-- What outcome would make this useful?
-- Who will use it or be affected by it?
-- Will it handle personal, research, or other sensitive data?
-- Will it serve students, minors, patients, identifiable research subjects, or the general public?
+1. What outcome would make this useful?
+2. Who will use it or be affected by it?
+3. Will it handle sensitive data? Present quick choices: `No`, `Yes`, `Not sure`.
+4. Is the intended audience or user group sensitive? Present quick choices: `No`, `Yes`, `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
+5. Is this a new project or a change to an existing project? Present quick choices: `New project`, `Existing project`, `Not sure`.
 
-Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label. If the initial request already answers a question, do not ask it again.
+Use the choice format consistently so VS Code can render the options as quick replies where supported. Accept a typed answer too. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
+
+Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label.
 
 Announce:
 
@@ -30,7 +35,7 @@ Announce:
 
 ## 2. Align on assumptions
 
-Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, in one short numbered round, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch.
+Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, one question per response, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch.
 
 > SDD 2/9: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
 
@@ -42,11 +47,11 @@ If the intent is vague, the assumptions conflict, or the work appears broad or h
 
 ## 3. Locate and inspect context
 
-Only after the initial exchange and scope hypothesis, inspect the current workspace to confirm the situation:
+Only after the initial questioning and alignment, inspect the current workspace to confirm the situation:
 
 - For a new project, treat the open folder as the project location and inspect what is already there.
 - For a change to an existing project, inspect the open folder's files, structure, configuration, tests, and version-control state.
-- If the current workspace is empty, classify the work as greenfield after confirming that this is intentional.
+- If the current workspace is empty, treat it as a new project only after confirming that this is intentional.
 - If the current workspace is not the project described by the user, stop and ask the user to open the target folder and run the skill again.
 
 Announce:
@@ -57,18 +62,13 @@ Do not switch folders during this workflow. Do not overwrite existing files.
 
 ## 4. Classify the work
 
-Classify environment from the user's intent and the inspected context: greenfield or brownfield. Infer session scope rather than asking the user to label it small or big. Use the goal, number of affected parts, existing complexity, integrations, uncertainty, and expected validation effort.
+Internally classify the project as new or existing from the user's intent and the inspected context. Do not expose the terms `greenfield` or `brownfield`. Infer session scope rather than asking the user to label it small or big. Use the goal, number of affected parts, existing complexity, integrations, uncertainty, and expected validation effort.
 
 Announce the classification with its reasons and invite correction:
 
-> SDD 4/9: This is a <greenfield/brownfield> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
+> SDD 4/9: This is a <new-project/existing-project> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
 
 Treat the scope as session-specific, not a permanent project label.
-
-Ask these risk questions unless the answer is already clear:
-
-1. Will it handle personal, research, or other sensitive data?
-2. Will it serve students, minors, patients, identifiable research subjects, or the general public?
 
 Classify risk as high if either answer is yes. If an answer is unclear, classify it as high. State the result and reason, for example: “This uses student data, so risk is high; I’ll add a review step before we ship.” Let the user correct a classification before continuing. Cost and external service calls are not risk gates, but each requires a decision record.
 
@@ -91,7 +91,7 @@ Announce:
 
 > SDD 5/9: Turning the goal and project context into an agreed specification.
 
-For greenfield work, create a new `specs/<short-name>.md`. For brownfield work, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
+For a new project, create a new `specs/<short-name>.md`. For an existing project, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
 
 The spec must contain:
 

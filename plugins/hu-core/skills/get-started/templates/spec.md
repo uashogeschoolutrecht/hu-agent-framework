@@ -10,7 +10,7 @@
 
 ## Orientation
 
-- Environment: greenfield / brownfield
+- Project: new / existing
 - Session scope: small / big
 - Risk: low / high
 - Reasons:
