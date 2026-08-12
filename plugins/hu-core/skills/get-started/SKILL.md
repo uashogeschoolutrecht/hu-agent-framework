@@ -11,21 +11,24 @@ Start this workflow only after the user has opened the folder they want to work 
 
 ## 1. Understand intent before inspecting
 
-Do not inspect files, run commands, or explore the workspace before this exchange unless the user has already supplied the answers. Ask exactly one question per response. Never show the user a list of upcoming questions. Keep each question short and wait for the answer before asking the next one.
+Do not inspect files, run commands, or explore the workspace before this exchange unless the user has already supplied the answers. Ask exactly one text-input question per response. Never show the user a list of upcoming text questions. Keep each question short and wait for the answer before asking the next one. Multiple-choice questions may be grouped in one interactive carousel.
 
 The first response must contain only the stage announcement and this question:
 
 > Briefly, what do you want to make or change? We will work out the specifics next.
 
-After the user answers, ask only the next unanswered question, in this order:
+After the user answers, ask the next unanswered text-input question, in this order:
 
 1. What outcome would make this useful?
 2. Who will use it or be affected by it?
-3. Will it handle sensitive data? Use `#vscode/askQuestions` with the single-choice options `No`, `Yes`, and `Not sure`.
-4. Is the intended audience or user group sensitive? Use `#vscode/askQuestions` with the single-choice options `No`, `Yes`, and `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
-5. Is this a new project or a change to an existing project? Use `#vscode/askQuestions` with the single-choice options `New project`, `Existing project`, and `Not sure`.
 
-For every choice question, invoke the built-in `#vscode/askQuestions` tool rather than writing the choices into the chat response. Make one tool call for one question and wait for the user's selection. Do not emulate the tool with bullets, numbered options, or a sentence listing the choices. If the tool is unavailable, ask one plain-text question without listing choices and accept the user's answer. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
+After the text-input questions, invoke the built-in `#vscode/askQuestions` tool once with these three single-choice questions in one carousel:
+
+- Will it handle sensitive data? Options: `No`, `Yes`, `Not sure`.
+- Is the intended audience or user group sensitive? Options: `No`, `Yes`, `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
+- Is this a new project or a change to an existing project? Options: `New project`, `Existing project`, `Not sure`.
+
+Do not write these choices into the chat response or emulate the carousel with bullets. If the tool is unavailable, ask these three questions as separate plain-text questions, one per response, without listing options. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
 
 Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label.
 
@@ -35,7 +38,7 @@ Announce:
 
 ## 2. Align on assumptions
 
-Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, one question per response, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch.
+Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, one text-input question per response, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch. Use the carousel for any structured choices.
 
 > SDD 2/9: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
 
