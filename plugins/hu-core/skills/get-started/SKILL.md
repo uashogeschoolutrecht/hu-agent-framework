@@ -21,11 +21,11 @@ After the user answers, ask only the next unanswered question, in this order:
 
 1. What outcome would make this useful?
 2. Who will use it or be affected by it?
-3. Will it handle sensitive data? Present quick choices: `No`, `Yes`, `Not sure`.
-4. Is the intended audience or user group sensitive? Present quick choices: `No`, `Yes`, `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
-5. Is this a new project or a change to an existing project? Present quick choices: `New project`, `Existing project`, `Not sure`.
+3. Will it handle sensitive data? Use `#vscode/askQuestions` with the single-choice options `No`, `Yes`, and `Not sure`.
+4. Is the intended audience or user group sensitive? Use `#vscode/askQuestions` with the single-choice options `No`, `Yes`, and `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
+5. Is this a new project or a change to an existing project? Use `#vscode/askQuestions` with the single-choice options `New project`, `Existing project`, and `Not sure`.
 
-Use the choice format consistently so VS Code can render the options as quick replies where supported. Accept a typed answer too. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
+For every choice question, invoke the built-in `#vscode/askQuestions` tool rather than writing the choices into the chat response. Make one tool call for one question and wait for the user's selection. Do not emulate the tool with bullets, numbered options, or a sentence listing the choices. If the tool is unavailable, ask one plain-text question without listing choices and accept the user's answer. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
 
 Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label.
 
