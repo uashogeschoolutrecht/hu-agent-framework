@@ -2,7 +2,7 @@
 name: get-started
 description: Start or continue a HU project using a risk-aware, spec-driven development workflow. Use when beginning a project, adding a feature, or asking how to work with the HU framework.
 owner: Data Science Pool
-last_reviewed: 2026-08-11
+last_reviewed: 2026-08-13
 ---
 
 # Get Started
@@ -22,25 +22,31 @@ After the user answers, ask the next unanswered text-input question, in this ord
 1. What outcome would make this useful?
 2. Who will use it or be affected by it?
 
-After the text-input questions, invoke the built-in `#vscode/askQuestions` tool once with these three single-choice questions in one carousel:
+After the text-input questions, perform only a lightweight workspace check for clear project markers such as `.git`, source files, `AGENTS.md`, `specs/`, or `decisions/`. Do not perform a full inspection yet. If the folder already holds a project, announce that fact before invoking the built-in `#vscode/askQuestions` tool.
+
+Invoke `#vscode/askQuestions` once with these five single-choice questions in one carousel:
 
 - Will it handle sensitive data? Options: `No`, `Yes`, `Not sure`.
 - Is the intended audience or user group sensitive? Options: `No`, `Yes`, `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
-- Is this a new project or a change to an existing project? Options: `New project`, `Existing project`, `Not sure`.
+- If the workspace check found project markers: `I see this folder already holds a project — is this the project you want to work on?` Options: `Yes, this project`, `No, wrong folder`. Otherwise: `Is this a new project or a change to an existing project?` Options: `New project`, `Existing project`, `Not sure`.
+- Should implementation use sub-agents? Options: `No, use one agent`, `Yes, use sub-agents`, `Not sure, recommend based on the task graph`.
+- If sub-agents are used: `Use the default maximum of 2 workers? (warning: increased costs and potential instability)` Options: `Yes, use at most 2`, `No, I want more workers`, `Not sure, keep the default`. If the user chooses more workers, ask for the requested number and enforce a hard maximum of 4.
 
-Do not write these choices into the chat response or emulate the carousel with bullets. If the tool is unavailable, ask these three questions as separate plain-text questions, one per response, without listing options. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
+Do not write these choices into the chat response or emulate the carousel with bullets. If the tool is unavailable, ask these five questions as separate plain-text questions, one per response, without listing options. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
+
+If the user selects `No, wrong folder`, stop the workflow and ask them to open the intended folder and run this skill again. Do not inspect or modify the current folder further.
 
 Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label.
 
 Announce:
 
-> SDD 1/9: Understanding the goal before examining the project context.
+> SDD 1/10: Understanding the goal before examining the project context.
 
 ## 2. Align on assumptions
 
 Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, one text-input question per response, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch. Use the carousel for any structured choices.
 
-> SDD 2/9: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
+> SDD 2/10: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
 
 Ask one final lightweight alignment question:
 
@@ -59,7 +65,7 @@ Only after the initial questioning and alignment, inspect the current workspace 
 
 Announce:
 
-> SDD 3/9: Locating the relevant project context and checking what already exists.
+> SDD 3/10: Locating the relevant project context and checking what already exists.
 
 Do not switch folders during this workflow. Do not overwrite existing files.
 
@@ -69,7 +75,7 @@ Internally classify the project as new or existing from the user's intent and th
 
 Announce the classification with its reasons and invite correction:
 
-> SDD 4/9: This is a <new-project/existing-project> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
+> SDD 4/10: This is a <new-project/existing-project> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
 
 Treat the scope as session-specific, not a permanent project label.
 
@@ -92,7 +98,7 @@ The generated `AGENTS.md` is instruction-layer guidance, not a substitute for re
 
 Announce:
 
-> SDD 5/9: Turning the goal and project context into an agreed specification.
+> SDD 5/10: Turning the goal and project context into an agreed specification.
 
 For a new project, create a new `specs/<short-name>.md`. For an existing project, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
 
@@ -113,7 +119,29 @@ The spec must contain:
 
 Do not start implementation while requirements or acceptance criteria are materially unclear. Ask focused questions instead.
 
-## 6. Prototype
+## 6. Decompose into tasks
+
+Announce:
+
+> SDD 6/10: Breaking the agreed specification into small, testable implementation tasks.
+
+Invoke the reusable `plan-tasks` skill with the agreed specification. Create one `tasks/<NN>-<slug>.md` file per task at the project root. Do not overwrite existing task files; when continuing a feature, update only the task files that belong to that feature and preserve completed task history.
+
+Every implementation task must:
+
+- be small enough for one agent to complete and review
+- have one clear outcome and explicit acceptance criteria
+- include a sanity-check test for its local behavior
+- declare `depends_on` task IDs, using an empty list when it has no prerequisites
+- state which spec requirement it addresses
+
+Group tasks by the path through the system rather than producing a purely horizontal list. Insert dedicated `validation` tasks after meaningful groups of implementation tasks. A validation task must depend on the tasks that establish its path and test that those elements communicate through the relevant layers. It may be the first task that proves a thin vertical slice; it is not a substitute for the final acceptance checks.
+
+Before continuing, check that the task dependency graph has no cycles, every dependency exists, every task is reachable from a starting task, and each implementation task has a sanity test. Record the vertical-slice validation tasks explicitly in the task files. Do not implement tasks in this stage.
+
+Create `tasks/_execution-policy.md` from the `plan-tasks` template using the user's sub-agent choice. Use `use_subagents: false` when the user chooses `No` or `Not sure`. Use `max_workers: 2` unless the user explicitly requests a higher number, and never write a value above 4. This records permission for a later execution stage; it does not start agents.
+
+## 7. Prototype
 
 This stage is active for every project. Keep it proportional to the inferred scope:
 
@@ -124,15 +152,17 @@ This stage is active for every project. Keep it proportional to the inferred sco
 
 Announce:
 
-> SDD 6/9: Prototyping the riskiest assumption so we can improve the direction before building further.
+> SDD 7/10: Prototyping the riskiest assumption so we can improve the direction before building further.
 
 Show the prototype or a functioning thin example and proactively ask what the user would change, remove, or do differently. If feedback materially changes the goal, users, boundaries, or assumptions, return to the alignment stage, restate the revised understanding, and update the spec's `Iterations / Feedback` section before continuing. Do not treat a prototype as production-ready unless that is explicitly the goal.
 
-## 7. Build and gather feedback
+## 8. Build and gather feedback
 
-> SDD 7/9: Building the next small improvement and gathering feedback before expanding the scope.
+> SDD 8/10: Building the next small improvement and gathering feedback before expanding the scope.
 
 Implement the smallest useful next increment. After each functioning increment, proactively ask for feedback and compare it with the agreed assumptions and acceptance criteria. Repeat the prototype, feedback, and improvement loop as needed; the workflow is iterative, not a one-way march from spec to completion.
+
+When `tasks/_execution-policy.md` enables sub-agents, invoke the reusable `coordinate-tasks` skill for implementation waves. Do not bypass that policy by launching workers directly. The coordinator must obtain approval before each wave, keep validation tasks serial, and apply the hard maximum of 4 workers.
 
 When a user proposes a decision that appears risky or likely to undermine the goal, give a brief nudge rather than silently complying or blocking:
 
@@ -146,9 +176,9 @@ For high-risk work, pause before release for the review gate named in the spec. 
 
 Ask before irreversible or destructive actions. Never delete a remote repository, branch, or release.
 
-## 8. Validate a vertical slice
+## 9. Validate a vertical slice
 
-> SDD 8/9: Validating one thin, functioning path through the relevant system layers.
+> SDD 9/10: Validating one thin, functioning path through the relevant system layers.
 
 Implement or test a small traceable path through the relevant layers, such as interface, application logic, domain/model logic, persistence, and external integration. Prefer an end-to-end slice over a complete horizontal module. Use the result and the user's feedback to correct the spec or design before expanding the build. Repeat this stage within the iteration loop whenever a new risk or layer is introduced.
 
@@ -167,7 +197,7 @@ Before declaring completion, run the acceptance checks from the spec and repeat 
 
 Announce:
 
-> SDD 9/9: Verifying acceptance criteria, the integrated slice, feedback, and recorded decisions.
+> SDD 10/10: Verifying acceptance criteria, the integrated slice, feedback, task status, and recorded decisions.
 
 Summarise what changed and what remains open, and point to the spec and decision records. For high-risk work, state whether the review gate passed, is pending, or was not applicable. Do not claim completion when verification was skipped.
 
