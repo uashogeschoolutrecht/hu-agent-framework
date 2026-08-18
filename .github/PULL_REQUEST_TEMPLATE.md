@@ -1,4 +1,4 @@
-## Skill or framework change
+## Skill, knowledge, or framework change
 
 ### What does this change do?
 
@@ -17,5 +17,8 @@
 
 - [ ] No secrets or data files are included
 - [ ] Skill frontmatter is complete and valid
+- [ ] Knowledge is HU-wide and approved for university-wide use
+- [ ] Knowledge metadata identifies its owner, source, and review date
+- [ ] Knowledge is marked overridable or protected intentionally
 - [ ] Instructions are visible and understandable to a human reviewer
 - [ ] Tests or validation checks pass

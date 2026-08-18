@@ -14,16 +14,23 @@ The HU Agent Framework distributes reviewed Copilot skills and establishes a lig
 
 The plugin is in preview in VS Code. The first installation and workspace-recommendation path must be checked manually in a clean profile; see `setup/manual-verification.md`.
 
-## Tiers
+## Knowledge and tiers
 
 - `hu-core`: university-wide reviewed skills in this repository.
 - `hu-dsp`: Data Science Pool skills in `hu-agent-framework-dsp`.
+- University knowledge: reviewed, HU-wide reference material shipped with `hu-core` in [`plugins/hu-core/knowledge/`](plugins/hu-core/knowledge/).
 - Project skills: `.github/skills/` in the project repository.
 
-Lower tiers take precedence when their instructions overlap. Plugins compose in VS Code, so the bootstrap `AGENTS.md` states this rule explicitly.
+Agents retrieve relevant university knowledge first, then apply team, project, and individual context. Lower levels may refine or override university guidance marked `overridable: true`; protected university constraints remain authoritative. Plugins compose in VS Code, so the bootstrap `AGENTS.md` states this rule explicitly.
+
+The catalog is intentionally Git-backed and small. Add a focused Markdown document, register it in `plugins/hu-core/knowledge/index.json`, and submit it for review. Do not add team-specific or personal information to this repository.
 
 ## Repository status
 
-This is v1. The framework focuses on the get-started SDD workflow, project guardrails, skill sharing, and the plugin distribution pipe. Visualisation, analytics, richer decision records, and MCP servers are deferred.
+This is v1. The framework focuses on the get-started SDD workflow, reviewed knowledge, project guardrails, skill sharing, and the plugin distribution pipe. Visualisation, analytics, richer decision records, and MCP servers are deferred.
 
 The get-started workflow is iterative: it aligns assumptions up front, decomposes agreed specifications into dependency-aware task files, then uses small prototypes, functioning vertical slices, and user feedback to improve the direction before expanding the build. Optional parallel execution uses human-approved, bounded waves with intermediate vertical-slice validation gates.
+
+Alignment is proportional: `align-quick` establishes the minimum shared understanding by default, while `align-deep` is used when risk, scope, uncertainty, or an explicit user request justifies more questioning.
+
+Future directions and open ideas are collected in [`docs/ideas.md`](docs/ideas.md).

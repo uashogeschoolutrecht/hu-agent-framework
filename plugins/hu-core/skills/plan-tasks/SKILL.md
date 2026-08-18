@@ -25,7 +25,7 @@ After a group establishes enough of a path to test communication between element
 
 ## 3. Create task files
 
-Create `tasks/` at the project root when it does not exist. Create one file per task using `templates/task.md` as the structure. Create `tasks/_execution-policy.md` using `templates/execution-policy.md` after the user has answered the sub-agent questions.
+Create `tasks/` at the project root when it does not exist. Create one file per task using `templates/task.md` as the structure. Create `tasks/_execution-policy.md` using `templates/execution-policy.md` with the defaults `use_subagents: false` and `max_workers: 2`. Do not ask the user about sub-agents; change the defaults only on an explicit user request.
 
 `tasks/<NN>-<slug>.md`
 
@@ -69,7 +69,7 @@ Report any unresolved dependency or test gap instead of silently repairing the s
 
 Do not generate a parallel execution schedule yet. The dependency metadata is a future input to an orchestrator; this skill only records the graph in task files.
 
-The execution policy is opt-in. Treat `use_subagents: false` and `max_workers: 2` as the safe defaults. The policy may request more than two workers only after explicit user confirmation, and the maximum value is always 4. Do not put cost estimates in the task files unless they are known; record actual usage in the execution report.
+The execution policy is opt-in and is written from the defaults `use_subagents: false` and `max_workers: 2` without asking the user. It may enable sub-agents or request more than two workers only after an explicit user request, and the maximum value is always 4. Do not put cost estimates in the task files unless they are known; record actual usage in the execution report.
 
 ## Output
 

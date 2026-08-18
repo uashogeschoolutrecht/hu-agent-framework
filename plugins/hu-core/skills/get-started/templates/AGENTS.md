@@ -2,7 +2,9 @@
 
 Use the HU Agent Framework's spec-driven workflow. Start new work by orienting on environment, session scope, and risk, then write or update a spec before building.
 
-Team-tier skills take precedence over university-tier skills when both address the same task. Project skills in `.github/skills/` are specific to this repository.
+Use reviewed university knowledge first, then applicable team knowledge, project instructions, and individual preferences. More specific guidance may refine or override university guidance marked `overridable: true`; it must not weaken protected university constraints.
+
+Project skills in `.github/skills/` are specific to this repository. Use the `hu-knowledge` skill to retrieve only relevant university context before making development decisions. The university knowledge catalog ships with the `hu-core` plugin; it is not stored in this repository.
 
 ## Guardrails
 

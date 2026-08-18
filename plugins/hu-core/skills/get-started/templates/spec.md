@@ -13,6 +13,8 @@
 - Project: new / existing
 - Session scope: small / big
 - Risk: low / high
+- Alignment: quick / deep
+- Alignment uncertainty: low / high
 - Reasons:
 
 ## Assumptions
@@ -22,6 +24,16 @@
 ### Boundaries
 
 ### Assumptions to validate
+
+## Module Boundaries
+
+Use this section when the work spans multiple concerns, consumers, data sources, or deployment boundaries. Keep it brief or state why a direct implementation is clearer for a small script or exploratory task.
+
+| Module | Responsibility | Interface | Dependencies |
+|---|---|---|---|
+|  |  |  |  |
+
+Explain why each non-obvious boundary helps understanding, testing, change isolation, or handover. Do not introduce modules, layers, or abstractions only to fill this table.
 
 ## Requirements
 

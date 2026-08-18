@@ -9,50 +9,21 @@ last_reviewed: 2026-08-13
 
 Start this workflow only after the user has opened the folder they want to work in. VS Code resets the Copilot Chat conversation when the user switches folders. If no workspace is open, or the current workspace is clearly not the intended project, tell the user to open the correct folder and run this skill again; do not attempt to carry the workflow across that switch. Keep the conversation concise. Announce each SDD stage in one line, plus classifications, gates, decision records, and feedback loops. Do not narrate file operations.
 
-## 1. Understand intent before inspecting
+## 1. Quick alignment before inspecting
 
-Do not inspect files, run commands, or explore the workspace before this exchange unless the user has already supplied the answers. Ask exactly one text-input question per response. Never show the user a list of upcoming text questions. Keep each question short and wait for the answer before asking the next one. Multiple-choice questions may be grouped in one interactive carousel.
-
-The first response must contain only the stage announcement and this question:
-
-> Briefly, what do you want to make or change? We will work out the specifics next.
-
-After the user answers, ask the next unanswered text-input question, in this order:
-
-1. What outcome would make this useful?
-2. Who will use it or be affected by it?
-
-After the text-input questions, perform only a lightweight workspace check for clear project markers such as `.git`, source files, `AGENTS.md`, `specs/`, or `decisions/`. Do not perform a full inspection yet. If the folder already holds a project, announce that fact before invoking the built-in `#vscode/askQuestions` tool.
-
-Invoke `#vscode/askQuestions` once with these five single-choice questions in one carousel:
-
-- Will it handle sensitive data? Options: `No`, `Yes`, `Not sure`.
-- Is the intended audience or user group sensitive? Options: `No`, `Yes`, `Not sure`. Explain only if needed that this includes students, minors, patients, identifiable research subjects, or the general public.
-- If the workspace check found project markers: `I see this folder already holds a project — is this the project you want to work on?` Options: `Yes, this project`, `No, wrong folder`. Otherwise: `Is this a new project or a change to an existing project?` Options: `New project`, `Existing project`, `Not sure`.
-- Should implementation use sub-agents? Options: `No, use one agent`, `Yes, use sub-agents`, `Not sure, recommend based on the task graph`.
-- If sub-agents are used: `Use the default maximum of 2 workers? (warning: increased costs and potential instability)` Options: `Yes, use at most 2`, `No, I want more workers`, `Not sure, keep the default`. If the user chooses more workers, ask for the requested number and enforce a hard maximum of 4.
-
-Do not write these choices into the chat response or emulate the carousel with bullets. If the tool is unavailable, ask these five questions as separate plain-text questions, one per response, without listing options. If the user's initial message already answers a question, skip it. Do not use the terms `greenfield` or `brownfield` in user-facing questions or explanations.
-
-If the user selects `No, wrong folder`, stop the workflow and ask them to open the intended folder and run this skill again. Do not inspect or modify the current folder further.
-
-Keep this exchange lightweight. Do not ask the user for a full specification, technical solution, or a small/big label.
+Invoke `align-quick` as the default first step. It establishes the minimum shared understanding, performs the lightweight workspace check, and produces the initial alignment packet. Do not inspect files, run commands, or explore the workspace before quick alignment unless the user has already supplied the needed answers.
 
 Announce:
 
 > SDD 1/10: Understanding the goal before examining the project context.
 
-## 2. Align on assumptions
+## 2. Confirm the initial alignment
 
-Draft the goal, desired outcome, users, likely affected parts, and important assumptions from the user's answers. Do not make the user write a complete plan. Ask only about assumptions that are unclear or load-bearing, one text-input question per response, and give a recommended answer for each question. The user should be able to confirm or correct the draft rather than construct it from scratch. Use the carousel for any structured choices.
+Announce:
 
 > SDD 2/10: I understand the goal as <brief summary>. These are my working assumptions: <brief list>. Please correct anything important before I inspect the project.
 
-Ask one final lightweight alignment question:
-
-> What would make this unusable or a clear failure for you?
-
-If the intent is vague, the assumptions conflict, or the work appears broad or high risk, continue with another short round of targeted questions. Announce why the deeper round is needed. Do not turn this into a fixed questionnaire. The alignment stage is complete when the goal, intended outcome, boundaries, and material assumptions are shared enough to inspect and specify.
+The quick alignment packet is the shared baseline. Do not expand it into a full specification at this point.
 
 ## 3. Locate and inspect context
 
@@ -69,19 +40,31 @@ Announce:
 
 Do not switch folders during this workflow. Do not overwrite existing files.
 
+Before making architecture or technology recommendations, use `hu-knowledge` when the task touches HU terminology, organizational context, standards, templates, or a recurring solution pattern. Retrieve the smallest relevant set of approved university documents, then inspect team and project guidance. Treat draft documents as unapproved context and report conflicts rather than silently resolving them.
+
 ## 4. Classify the work
 
 Internally classify the project as new or existing from the user's intent and the inspected context. Do not expose the terms `greenfield` or `brownfield`. Infer session scope rather than asking the user to label it small or big. Use the goal, number of affected parts, existing complexity, integrations, uncertainty, and expected validation effort.
 
 Announce the classification with its reasons and invite correction:
 
-> SDD 4/10: This is a <new-project/existing-project> <focused/broad> session because <brief reasons>. You can correct that assessment before we continue.
+> SDD 4/10: This is a <new-project/existing-project> <small/big> session because <brief reasons>. You can correct that assessment before we continue.
 
 Treat the scope as session-specific, not a permanent project label.
 
-Classify risk as high if either answer is yes. If an answer is unclear, classify it as high. State the result and reason, for example: “This uses student data, so risk is high; I’ll add a review step before we ship.” Let the user correct a classification before continuing. Cost and external service calls are not risk gates, but each requires a decision record.
+Classify risk as high when the work handles sensitive data, or when the intended audience or user group is sensitive: students, minors, patients, identifiable research subjects, or the general public. `align-quick` asks both questions. If either answer is yes, or either is unclear or was never answered, classify risk as high. State the result and reason, for example: “This uses student data, so risk is high; I’ll add a review step before we ship.” Let the user correct a classification before continuing. Cost and external service calls are not risk gates, but each requires a decision record.
 
-## 4. Bootstrap
+## 4b. Escalate alignment when needed
+
+Classify alignment uncertainty as low or high. Escalate to `align-deep` when risk is high, the work is big or spans multiple boundaries, material assumptions remain unresolved, competing interpretations are plausible, or the user explicitly requests deeper alignment. Otherwise continue with the quick alignment packet. Do not use project size alone as the trigger.
+
+When escalating, announce:
+
+> SDD 4b/10: This work has unresolved <risk, scope, or assumptions>, so I’m clarifying those before writing the specification.
+
+Invoke `align-deep` before specification. It must not repeat questions already answered during quick alignment, inspection, or context retrieval.
+
+## Bootstrap
 
 If this is a new project, create these items from the templates beside this file:
 
@@ -114,8 +97,11 @@ The spec must contain:
 - prototype goal and what it should validate
 - first vertical slice and the path it should trace through the system
 - confirmed assumptions and boundaries
+- module boundaries when the work spans multiple concerns, consumers, data sources, or deployment boundaries; for a small script, state why a direct implementation is clearer
 - iteration and feedback approach
 - implementation notes, if they are already known
+
+When proposing module boundaries, state each module's responsibility, interface, dependencies, and reason for the boundary. Challenge unnecessary fragmentation and generic layers. Do not create modules merely to increase file count. Keep this proportional to the work: a direct script may be the clearest design for a genuinely small or exploratory task.
 
 Do not start implementation while requirements or acceptance criteria are materially unclear. Ask focused questions instead.
 
@@ -139,14 +125,14 @@ Group tasks by the path through the system rather than producing a purely horizo
 
 Before continuing, check that the task dependency graph has no cycles, every dependency exists, every task is reachable from a starting task, and each implementation task has a sanity test. Record the vertical-slice validation tasks explicitly in the task files. Do not implement tasks in this stage.
 
-Create `tasks/_execution-policy.md` from the `plan-tasks` template using the user's sub-agent choice. Use `use_subagents: false` when the user chooses `No` or `Not sure`. Use `max_workers: 2` unless the user explicitly requests a higher number, and never write a value above 4. This records permission for a later execution stage; it does not start agents.
+Create `tasks/_execution-policy.md` from the `plan-tasks` template using the defaults `use_subagents: false` and `max_workers: 2`. Do not ask the user about sub-agents. Change these values only when the user explicitly asks for sub-agent execution or a different worker count, and never write a `max_workers` value above 4. This records permission for a later execution stage; it does not start agents.
 
 ## 7. Prototype
 
 This stage is active for every project. Keep it proportional to the inferred scope:
 
-- For a focused project, use the smallest useful prototype: a sketch, stub, spike, example interaction, or thin proof of the riskiest assumption.
-- For a broad project, prototype the uncertain or user-visible parts before committing to full implementation.
+- For a small project, use the smallest useful prototype: a sketch, stub, spike, example interaction, or thin proof of the riskiest assumption.
+- For a big project, prototype the uncertain or user-visible parts before committing to full implementation.
 - Use the prototype to test understanding with the user and refine the spec, not merely to demonstrate generated code.
 - Skip a separate prototype only when building the prototype is practically the same as building the whole small project. State that decision and why.
 
