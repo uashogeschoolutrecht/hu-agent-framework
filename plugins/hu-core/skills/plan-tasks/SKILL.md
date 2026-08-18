@@ -1,6 +1,6 @@
 ---
 name: plan-tasks
-description: Turn an agreed HU specification into small, dependency-aware task files with local tests and intermediate vertical-slice validation tasks.
+description: Turn an agreed HU specification into small, dependency-aware task files with local tests and intermediate vertical-slice validation tasks. Use when an agreed specification already exists; get-started invokes this at its decomposition stage.
 owner: Data Science Pool
 last_reviewed: 2026-08-13
 ---

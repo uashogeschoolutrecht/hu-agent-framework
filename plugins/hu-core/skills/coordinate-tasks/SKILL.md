@@ -1,6 +1,6 @@
 ---
 name: coordinate-tasks
-description: Execute dependency-aware HU task files in human-approved, bounded waves using tightly scoped VS Code sub-agents.
+description: Execute dependency-aware HU task files in human-approved, bounded waves using tightly scoped VS Code sub-agents. Use only when task files and an execution policy already exist; get-started invokes this when the policy enables sub-agents.
 owner: Data Science Pool
 last_reviewed: 2026-08-13
 ---

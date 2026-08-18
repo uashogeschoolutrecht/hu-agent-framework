@@ -1,6 +1,6 @@
 ---
 name: get-started
-description: Start or continue a HU project using a risk-aware, spec-driven development workflow. Use when beginning a project, adding a feature, or asking how to work with the HU framework.
+description: Start or continue a HU project using a risk-aware, spec-driven development workflow. Use when beginning a project, adding a feature, or asking how to run project work with the HU framework. For authoring or sharing a skill or agent, use make-skill, make-agent, or share-contribution instead.
 owner: Data Science Pool
 last_reviewed: 2026-08-13
 ---

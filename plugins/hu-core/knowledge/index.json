@@ -152,5 +152,19 @@
     "last_reviewed": "2026-08-17",
     "review_due": "2026-09-17",
     "overridable": false
+  },
+  {
+    "id": "contribution-standard",
+    "title": "HU Skill And Agent Contribution Standard",
+    "path": "framework/contribution-standard.md",
+    "kind": "policy",
+    "topics": ["skills", "agents", "contribution", "review", "quality", "framework"],
+    "scope": "university",
+    "owner": "Data Science Pool",
+    "source": "Framework contribution bar, approved for current framework scope",
+    "status": "approved",
+    "last_reviewed": "2026-08-18",
+    "review_due": "2027-02-18",
+    "overridable": true
   }
 ]
