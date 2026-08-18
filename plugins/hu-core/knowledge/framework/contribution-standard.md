@@ -31,7 +31,8 @@ If a skill would do, write a skill. Do not create an agent to make a skill feel 
 
 Both skills and agents require `name`, `description`, `owner`, and `last_reviewed`. CI rejects anything missing these.
 
-- `name` is plain kebab-case and matches its directory name for a skill, or its filename stem for an agent. Never add a namespace prefix; the plugin name becomes the command prefix automatically, and a manual prefix fails to load silently.
+- `name` is plain kebab-case and matches its directory name for a skill, or its filename without the `.agent.md` suffix for an agent. Never add a namespace prefix; the plugin name becomes the command prefix automatically, and a manual prefix fails to load silently.
+- An agent file must end in `.agent.md`. A plain `.md` file is not loaded as an agent.
 - `owner` is a team or role that can act on a review issue, not a placeholder.
 - `last_reviewed` is `YYYY-MM-DD` and is the date a human actually read it.
 

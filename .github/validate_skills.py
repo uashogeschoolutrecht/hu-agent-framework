@@ -47,8 +47,12 @@ errors = []
 for skill_file in ROOT.glob("plugins/*/skills/*/SKILL.md"):
     check(skill_file, skill_file.parent.name, "directory")
 
-for agent_file in ROOT.glob("plugins/*/agents/*.md"):
-    check(agent_file, agent_file.stem, "filename")
+for agent_file in ROOT.glob("plugins/*/agents/*.agent.md"):
+    check(agent_file, agent_file.name.removesuffix(".agent.md"), "filename without .agent.md")
+
+for stray in ROOT.glob("plugins/*/agents/*.md"):
+    if not stray.name.endswith(".agent.md"):
+        errors.append(f"{stray}: agent files must end in .agent.md or they are not loaded")
 
 if errors:
     print("\n".join(errors), file=sys.stderr)

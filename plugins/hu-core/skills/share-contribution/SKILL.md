@@ -32,7 +32,7 @@ If anything fails, stop and tell the user what to fix. Do not open a pull reques
 
 Ask whether the target is the team repository (`hu-agent-framework-dsp`) or the university repository (`hu-agent-framework`). University-wide promotion should normally follow successful team use; say so if the user goes straight to university without it, then respect their answer.
 
-Place a skill in `plugins/<plugin>/skills/<name>/` and an agent in `plugins/<plugin>/agents/<name>.md`. Do not rename the contribution to add a namespace prefix; the plugin name becomes the command prefix automatically.
+Place a skill in `plugins/<plugin>/skills/<name>/` and an agent in `plugins/<plugin>/agents/<name>.agent.md`, keeping the `.agent.md` suffix. Do not rename the contribution to add a namespace prefix; the plugin name becomes the command prefix automatically.
 
 ## 4. Prepare the pull request
 

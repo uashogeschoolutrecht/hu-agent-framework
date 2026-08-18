@@ -1,9 +1,10 @@
 ---
-name: <kebab-case-name-matching-this-filename>
-description: <What this role is and when to select it. Distinguish it from every other agent and skill.>
+name: <kebab-case-name-matching-the-filename-without-.agent.md>
+description: '<What this role is and when to select it. Distinguish it from every other agent and skill.>'
+argument-hint: <What a useful opening request looks like. Delete this line when the agent does not expect one.>
+tools: ['read', 'search']
 owner: <team or role that can act on a review issue>
 last_reviewed: <YYYY-MM-DD>
-tools: [<narrowest set that does the job>]
 ---
 
 # <Title Case Role>
@@ -20,7 +21,7 @@ tools: [<narrowest set that does the job>]
 
 ## Limits
 
-- <Why each granted tool is needed, especially any that changes or deletes something.>
+- <Why each granted tool is needed, especially any that changes or deletes something. Read-only roles keep to `read` and `search`.>
 - Does not create other agents.
 - Does not change scope, acceptance criteria, or another task's status.
 - Asks before irreversible or destructive actions.

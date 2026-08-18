@@ -31,26 +31,35 @@ Ask only what you cannot infer:
 
 Give the narrowest tool set that does the job. A reviewing or inspecting agent is read-only by default. Never grant destructive capability that the role does not need, and never grant an agent the ability to create further agents.
 
+Use tool names exactly as they appear in agent files that already work, such as `read`, `search`, `search/codebase`, `execute`, and `editFiles`. Do not invent tool names; an unrecognised entry silently narrows or breaks the agent. If you need a tool you have not seen used, say so rather than guessing at its identifier.
+
 ## 3. Write the agent
 
-Create `.github/agents/<name>.md` in the current project, using `templates/AGENT.md` beside this file. Use the project as the first home; promotion into a team or university plugin happens later through `share-contribution`, which places it in `agents/` at the plugin root.
+Create `.github/agents/<name>.agent.md` in the current project, using `templates/AGENT.md` beside this file.
 
-**Unverified path.** The agent file location and extension have not been confirmed against the current VS Code build. Before relying on an agent, the author must open Copilot Chat and confirm the agent is selectable. If it is not, check the VS Code agent documentation for the current location, move the file, and record the working path in `setup/manual-verification.md`. Tell the user this check is required; do not report the agent as working because the file was written.
+The `.agent.md` suffix is required. A plain `.md` file in that directory is not loaded as an agent. The `name` in frontmatter must match the filename without the `.agent.md` suffix.
+
+Use the project as the first home; promotion into a team or university plugin happens later through `share-contribution`, which places the same file in `agents/` at the plugin root.
+
+Set `description` to what the role is and when to select it, in one field. Set `argument-hint` when the agent expects a particular kind of opening request. Omit `model` unless the role genuinely needs a specific one, so the agent follows the user's own model choice.
 
 Do not overwrite an existing agent. When improving one, edit it in place, keep its `name`, and update `last_reviewed` to today.
+
+After writing, tell the user to open Copilot Chat and confirm the agent is selectable before relying on it. Writing the file is not evidence that it loaded.
 
 ## 4. Check it before handing it back
 
 Verify against the standard and report each failure rather than repairing the author's intent silently:
 
-- `name` is kebab-case and matches the filename stem, with no namespace prefix.
+- The filename ends in `.agent.md` and `name` matches the filename without that suffix.
+- `name` is kebab-case with no namespace prefix.
 - The description says what the role is and when to select it, and does not collide with an existing agent or skill.
 - Responsibilities and non-responsibilities are both stated.
-- The tool list is the narrowest that does the job, and any destructive capability is justified in the file.
+- Every tool in the list is one you have seen in use, is needed, and any destructive capability is justified in the file.
 - No secrets, credentials, data, or hidden Unicode.
 
 ## Output
 
-Report the file path, the role boundary, the tool allowlist and why each entry is needed, and the required manual check from stage 3. Do not claim the agent is available, reviewed, or verified.
+Report the file path, the role boundary, the tool allowlist with a reason for each entry, and the confirmation step the user still has to perform. Do not claim the agent is loaded, available, or reviewed.
 
 Artifacts stay in English.

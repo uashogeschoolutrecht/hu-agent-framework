@@ -20,7 +20,7 @@ The plugin is in preview in VS Code. The first installation and workspace-recomm
 - `hu-dsp`: Data Science Pool skills in `hu-agent-framework-dsp`.
 - University knowledge: reviewed, HU-wide reference material shipped with `hu-core` in [`plugins/hu-core/knowledge/`](plugins/hu-core/knowledge/).
 - Project skills: `.github/skills/` in the project repository.
-- Project agents: `.github/agents/` in the project repository.
+- Project agents: `.github/agents/<name>.agent.md` in the project repository.
 
 Agents retrieve relevant university knowledge first, then apply team, project, and individual context. Lower levels may refine or override university guidance marked `overridable: true`; protected university constraints remain authoritative. Plugins compose in VS Code, so the bootstrap `AGENTS.md` states this rule explicitly.
 
