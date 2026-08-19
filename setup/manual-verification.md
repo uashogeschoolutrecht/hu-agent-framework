@@ -9,4 +9,7 @@ Run these checks in a clean VS Code profile after the first push. They cannot be
 5. Open a throwaway project containing `.github/copilot/settings.json` from the template and confirm VS Code recommends the marketplace/plugin on the first chat message.
 6. Install `hu-dsp` from the same marketplace and confirm both plugins are available.
 
+7. Create an agent with `/hu-core:make-agent` in a throwaway project and confirm `.github/agents/<name>.agent.md` appears as a selectable agent in Copilot Chat.
+8. Promote that agent with `/hu-core:share-contribution` and confirm an agent shipped in a plugin's `agents/` directory is selectable once the plugin is installed. This tier is inferred from the skills layout and has not been observed directly.
+
 If a marketplace entry does not appear, check the VS Code Agent Plugins output/log and verify whether the current build expects `.github/plugin/marketplace.json` or `.claude-plugin/marketplace.json`. Record the result in an issue before changing the manifest.

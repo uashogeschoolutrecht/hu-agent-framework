@@ -14,7 +14,7 @@ This policy controls the optional bounded-wave execution of the task graph. It d
 
 ## Defaults And Limits
 
-- Sub-agents are disabled unless the user explicitly opts in.
+- Sub-agents are disabled by default and are not asked about; they are enabled only when the user explicitly requests them.
 - The default maximum is 2 workers.
 - The hard maximum is 4 workers and cannot be overridden.
 - The user must approve each execution wave.
@@ -24,8 +24,8 @@ This policy controls the optional bounded-wave execution of the task graph. It d
 
 ## User Decision
 
-- Sub-agents: <no / yes / not sure>
-- Worker limit requested: <2 or explicit user value up to 4>
+- Sub-agents: no (default; enabled only on an explicit user request)
+- Worker limit: 2 (default; up to 4 on an explicit user request)
 - Decision date: <YYYY-MM-DD>
 
 ## Notes
