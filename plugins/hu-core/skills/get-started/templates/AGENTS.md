@@ -4,6 +4,8 @@ Use the HU Agent Framework's spec-driven workflow. Start new work by orienting o
 
 Use reviewed university knowledge first, then applicable team knowledge, project instructions, and individual preferences. More specific guidance may refine or override university guidance marked `overridable: true`; it must not weaken protected university constraints.
 
+Read `principles.md` at the project root, when it exists, before design and implementation choices. It records what this project stands for underneath the specification, and it is refined as the work proceeds rather than written once.
+
 Project skills in `.github/skills/` are specific to this repository. Use the `hu-knowledge` skill to retrieve only relevant university context before making development decisions. The university knowledge catalog ships with the `hu-core` plugin; it is not stored in this repository.
 
 ## Guardrails

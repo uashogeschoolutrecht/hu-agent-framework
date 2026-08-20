@@ -28,6 +28,8 @@ Deep alignment is not a fixed questionnaire. Ask only questions whose answers co
 
 Do not demand detailed technology choices before the problem and boundaries are understood. Do not repeat questions already answered during quick alignment or project inspection.
 
+Invoke `refine-principles` to reach the constraints and preferences underneath the stated goal. It owns how those are elicited, tested, and recorded.
+
 ## Deep alignment packet
 
 Maintain and present a concise packet containing:

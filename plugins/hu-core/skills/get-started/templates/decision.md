@@ -4,3 +4,4 @@
 - Decision: <what was decided>
 - Reasoning: <why>
 - Alternatives rejected: <what was not chosen and why>
+- Principle: <the entry in principles.md this serves, or "none recorded">
