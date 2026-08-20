@@ -34,6 +34,8 @@ The get-started workflow is iterative: it aligns assumptions up front, decompose
 
 Alignment is proportional: `align-quick` establishes the minimum shared understanding by default, while `align-deep` is used when risk, scope, uncertainty, or an explicit user request justifies more questioning.
 
+Underneath the specification, `refine-principles` maintains `principles.md`: the constraints and preferences the project stands for. Entries are inferred from what the user says and reacts to, each one rules something out and cites where it came from, and they are tested by asking what they predict for the next choice rather than by asking whether they sound right. The agent reads them before design decisions and surfaces a conflict instead of complying silently.
+
 Authoring is standardised: `make-skill` and `make-agent` write new contributions from shared templates, and `share-contribution` checks one against the contribution standard before preparing a pull request. The standard lives in [`plugins/hu-core/knowledge/framework/contribution-standard.md`](plugins/hu-core/knowledge/framework/contribution-standard.md) so the three skills do not each restate the bar.
 
 Future directions and open ideas are collected in [`docs/ideas.md`](docs/ideas.md).

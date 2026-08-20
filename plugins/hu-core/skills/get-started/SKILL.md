@@ -83,6 +83,8 @@ Announce:
 
 > SDD 5/10: Turning the goal and project context into an agreed specification.
 
+Read `principles.md` if it exists, and prefer the design and technology options its held entries support. The specification points at the file rather than restating its content.
+
 For a new project, create a new `specs/<short-name>.md`. For an existing project, create a scoped delta in the same location and explain what existing behaviour remains unchanged. Use the spec template.
 
 The spec must contain:
@@ -140,13 +142,15 @@ Announce:
 
 > SDD 7/10: Prototyping the riskiest assumption so we can improve the direction before building further.
 
-Show the prototype or a functioning thin example and proactively ask what the user would change, remove, or do differently. If feedback materially changes the goal, users, boundaries, or assumptions, return to the alignment stage, restate the revised understanding, and update the spec's `Iterations / Feedback` section before continuing. Do not treat a prototype as production-ready unless that is explicitly the goal.
+Show the prototype or a functioning thin example and proactively ask what the user would change, remove, or do differently. When the user judges a choice rather than reporting a fault, invoke `refine-principles`. If feedback materially changes the goal, users, boundaries, or assumptions, return to the alignment stage, restate the revised understanding, and update the spec's `Iterations / Feedback` section before continuing. Do not treat a prototype as production-ready unless that is explicitly the goal.
 
 ## 8. Build and gather feedback
 
 > SDD 8/10: Building the next small improvement and gathering feedback before expanding the scope.
 
 Implement the smallest useful next increment. After each functioning increment, proactively ask for feedback and compare it with the agreed assumptions and acceptance criteria. Repeat the prototype, feedback, and improvement loop as needed; the workflow is iterative, not a one-way march from spec to completion.
+
+When the user's feedback judges a choice rather than reporting a fault, invoke `refine-principles`. A bug report is not a principle.
 
 When `tasks/_execution-policy.md` enables sub-agents, invoke the reusable `coordinate-tasks` skill for implementation waves. Do not bypass that policy by launching workers directly. The coordinator must obtain approval before each wave, keep validation tasks serial, and apply the hard maximum of 4 workers.
 
@@ -155,6 +159,8 @@ When a user proposes a decision that appears risky or likely to undermine the go
 > One concern: <specific risk>. An alternative is <alternative>. I recommend <recommendation> unless you have a reason to prefer the original.
 
 Ask whether the user wants to keep the original decision. Record a consequential choice in `decisions/`.
+
+When the conflict is with a held entry in `principles.md` rather than a general risk, use `refine-principles` for the wording; it is a lighter touch for a preference and an explicit question for a constraint.
 
 Implement the accepted spec in small, reviewable increments. Prefer existing project conventions. Run the relevant tests after each meaningful increment and report failures plainly.
 
@@ -176,8 +182,9 @@ Create one `decisions/YYYY-MM-DD-<short-name>.md` for each non-obvious decision,
 - decision
 - reasoning
 - alternatives rejected
+- the principle it serves, when `principles.md` has a relevant entry
 
-Announce when a decision record is created. Do not create records for routine implementation details.
+Announce when a decision record is created. Do not create records for routine implementation details. If a decision contradicts a held principle, that is a signal that either the decision or the principle is wrong; raise it rather than recording both.
 
 Before declaring completion, run the acceptance checks from the spec and repeat the vertical-slice test after the relevant implementation is complete.
 

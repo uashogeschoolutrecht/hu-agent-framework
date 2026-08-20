@@ -17,6 +17,11 @@
 - Alignment uncertainty: low / high
 - Reasons:
 
+## Principles
+
+Held entries from `principles.md` that shape this work. Reference them; do not copy the file.
+Constraints and preferences live there. Goals belong in this specification.
+
 ## Assumptions
 
 ### Confirmed assumptions
